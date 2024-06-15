@@ -128,7 +128,7 @@ async function login() {
        return;
     }
 
-    const response = await fetch('/login', 
+    const response = await fetch('/api/auth/login', 
     { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -136,16 +136,34 @@ async function login() {
     });
 
     const data = await response.json();
-    localStorage.setItem('jwt', data.token);
+    localStorage.setItem('token', data.token);
 
     window.location.href = './dashboard.html';
 }
 
-// Función para manejar el registro
-function register() {
-   // Aquí puedes añadir la lógica para manejar el registro
-   document.getElementById('registerModal').style.display='none';
-   alert('Registro realizado con éxito');
+// Función para registrar un nuevo usuario
+async function register() {
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const newUsername = document.getElementById('newUsername').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const email = document.getElementById('email').value;
+
+    try {
+        const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nombre: firstName, apellido: lastName, nombreUsuario: newUsername, password: newPassword, correo: email })
+        });
+        const data = await response.json();
+        alert(data.msg);
+        closeRegisterModal();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al registrar usuario');
+    }
 }
 </script>
 
