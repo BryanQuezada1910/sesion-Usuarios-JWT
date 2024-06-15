@@ -61,12 +61,12 @@
         <form id="loginForm" class="col-auto">
             <div class="mb-3">
             <label for="username" class="form-label">Nombre Usuario:</label>
-            <input type="text" id="username" name="username" class="form-control">
+            <input type="text" id="username" name="username" value="" class="form-control">
             </div>
             
             <div class="mb-3">
             <label for="password" class="form-label">Contraseña:</label>
-            <input type="password" id="password" name="password" class="form-control">
+            <input type="password" id="password" name="password" value="" class="form-control">
             </div>
             
             <button type="button" class="btn btn-success" onclick="login()">Login</button>
@@ -119,9 +119,26 @@
 
 <script>
 // Función para manejar el login
-function login() {
-   // Aquí puedes añadir la lógica para manejar el login
-   alert('Login realizado con éxito');
+async function login() {
+    const nombreUsuario = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    if(nombreUsuario.trim() === '' || password.trim() === '') {
+       alert('Por favor, rellena todos los campos.');
+       return;
+    }
+
+    const response = await fetch('/login', 
+    { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({nombreUsuario, password})
+    });
+
+    const data = await response.json();
+    localStorage.setItem('jwt', data.token);
+
+    window.location.href = './dashboard.html';
 }
 
 // Función para manejar el registro
