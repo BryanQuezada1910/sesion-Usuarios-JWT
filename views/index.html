@@ -159,7 +159,6 @@ async function register() {
         });
         const data = await response.json();
         alert(data.msg);
-        closeRegisterModal();
     } catch (error) {
         console.error('Error:', error);
         alert('Error al registrar usuario');
