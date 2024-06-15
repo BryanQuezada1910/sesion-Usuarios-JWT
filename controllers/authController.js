@@ -68,7 +68,7 @@ exports.forgotPassword = async (req, res) => {
         };
 
         await transporter.sendMail(mailOptions);
-        res.json({ msg: 'Email sent' });
+        res.status(200).json({ msg: 'Email sent' });
     } catch (err) {
         res.status(500).json({ msg: 'Server error' });
     }
