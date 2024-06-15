@@ -135,10 +135,15 @@ async function login() {
         body: JSON.stringify({nombreUsuario, password})
     });
 
-    const data = await response.json();
-    localStorage.setItem('token', data.token);
+    if(response.ok)
+    {
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
 
-    window.location.href = './dashboard.html';
+        window.location.href = './dashboard.html';
+    }else{
+        alert('Inicio de sesion fallido. Por favor verifica tus credenciales');
+    }
 }
 
 // Función para registrar un nuevo usuario
