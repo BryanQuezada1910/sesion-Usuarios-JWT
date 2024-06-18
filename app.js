@@ -12,8 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'public')));
-
+//app.use(express.static(path.join(__dirname, 'public')));
 
 mongoose.connect((process.env.MONGO_URL_LOCAL), {
 }).then(() => {
@@ -50,7 +49,11 @@ app.get('/update-password', authMiddleware, (req, res) => {
 app.get('/reset-password/:token', (req, res) => {
     const token = req.params.token;
     // Aquí deberías renderizar la vista HTML para permitir al usuario restablecer la contraseña
-    res.sendFile(path.join(__dirname, 'public/resetPassword.html'));
+    if (!token) {
+        return res.status(401).redirect('/');
+    } else {
+        return res.status(200).sendFile(path.join(__dirname, 'public/resetPassword.html'));
+    }
 });
 
 const PORT = process.env.PORT || 5000;
