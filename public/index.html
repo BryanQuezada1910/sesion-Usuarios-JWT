@@ -177,36 +177,58 @@ async function login() {
 
 // Función para registrar un nuevo usuario
 async function register() {
+    // Obtener valores de los campos de entrada del formulario
     const firstName = document.getElementById('firstName').value;
     const lastName = document.getElementById('lastName').value;
     const newUsername = document.getElementById('newUsername').value;
     const newPassword = document.getElementById('newPassword').value;
     const email = document.getElementById('email').value;
 
+    // Validar campos del formulario (opcional pero recomendado)
+    if (!firstName || !lastName || !newUsername || !newPassword || !email) {
+        alert('Todos los campos son obligatorios');
+        return;
+    }
+
     try {
+        // Realizar la solicitud POST a la API para registrar el usuario
         const response = await fetch('/api/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ nombre: firstName, apellido: lastName, nombreUsuario: newUsername, password: newPassword, correo: email })
+            body: JSON.stringify({
+                nombre: firstName,
+                apellido: lastName,
+                nombreUsuario: newUsername,
+                password: newPassword,
+                correo: email
+            })
         });
 
+        // Convertir la respuesta a formato JSON
         const data = await response.json();
 
+        // Manejar la respuesta de la API
         if (response.ok) {
+            // Limpiar los campos del formulario
             clearFields();
-            document.getElementById('registerModal').style.display='none';
+            // Ocultar el modal de registro
+            document.getElementById('registerModal').style.display = 'none';
+            // Mostrar mensaje de éxito
             alert('Usuario registrado correctamente');
         } else {
+            // Mostrar mensaje de error proporcionado por la API
             alert(data.msg);
         }
     } catch (error) {
+        // Manejar errores de la solicitud
         console.error('Error:', error);
         alert('Error al registrar usuario');
     }
 }
 
+// Función para limpiar los campos del formulario de registro
 function clearFields() {
     document.getElementById('firstName').value = '';
     document.getElementById('lastName').value = '';
@@ -214,6 +236,7 @@ function clearFields() {
     document.getElementById('newPassword').value = '';
     document.getElementById('email').value = '';
 }
+
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
