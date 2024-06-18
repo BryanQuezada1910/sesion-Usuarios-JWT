@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 
-
 // Registro de usuario
 exports.register = async (req, res) => {
     const { nombre, apellido, nombreUsuario, password, correo } = req.body;
@@ -27,7 +26,6 @@ exports.register = async (req, res) => {
         res.status(500).json({ msg: 'Error registering user', error });
     }
 };
-
 
 // Inicio de sesión
 exports.login = async (req, res) => {
